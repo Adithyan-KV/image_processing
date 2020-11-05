@@ -1,0 +1,11 @@
+#ignore python bytecode files
+*.pyc
+
+#ignore the virtual environment
+impro
+
+#ignore folders in which testing images are put
+test_images
+
+#ignore vscode virtual environments
+.vscode
