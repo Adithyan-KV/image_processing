@@ -11,4 +11,4 @@ The code for my implementations of a variety of image processing stuff. Mostly w
 Converting an image into a [binary image](https://en.wikipedia.org/wiki/Binary_image). More details and examples can be found
 inside the binarization folder.
 
-![./binarization/demo_images/coins_demo.png]
+![binarization demo](./binarization/demo_images/coins_demo.png)
