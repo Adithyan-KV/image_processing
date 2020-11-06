@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from PIL import Image
 
 
@@ -8,7 +9,7 @@ def binarize(file_path):
         grayscale_image_data = preprocess_image(image_data)
         binarized_image_data = otsu_binarize(grayscale_image_data)
         binarized_image = Image.fromarray(np.uint8(binarized_image_data))
-        binarized_image.show()
+        binarized_image.save('bin_city.png')
 
 
 def preprocess_image(image_data):
@@ -40,9 +41,20 @@ def otsu_binarize(image_data):
             btw_class_variances[threshold] = variance
 
     optimal_threshold = np.argmax(btw_class_variances)
-    binarized_image = (image_data <= optimal_threshold) * 255
+    generate_histogram(image_data, optimal_threshold)
+    binarized_image = (image_data > optimal_threshold) * 255
     return binarized_image
 
 
+def generate_histogram(image_data, threshold):
+    counts, bins = np.histogram(image_data, range(0, 255))
+    plt.bar(bins[:-1], counts, width=1)
+    plt.axvline(threshold, color='black')
+    plt.xlabel('intensity')
+    plt.ylabel('freq of pixels')
+    plt.savefig('city_hist.png', dpi=300)
+    plt.show()
+
+
 if __name__ == "__main__":
-    binarize('test_images/bridge.jpg')
+    binarize('test_images/city.jpg')
