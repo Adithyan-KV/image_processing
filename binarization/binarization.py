@@ -9,7 +9,7 @@ def binarize(file_path):
         grayscale_image_data = preprocess_image(image_data)
         binarized_image_data = otsu_binarize(grayscale_image_data)
         binarized_image = Image.fromarray(np.uint8(binarized_image_data))
-        binarized_image.save('bin_text.png')
+        binarized_image.save('bin_handwriting.png')
 
 
 def preprocess_image(image_data):
@@ -52,9 +52,9 @@ def generate_histogram(image_data, threshold):
     plt.axvline(threshold, color='black')
     plt.xlabel('intensity')
     plt.ylabel('freq of pixels')
-    plt.savefig('text_hist.png', dpi=300)
+    plt.savefig('handwriting_hist.png', dpi=300)
     plt.show()
 
 
 if __name__ == "__main__":
-    binarize('test_images/text.jpg')
+    binarize('test_images/handwriting.jpg')

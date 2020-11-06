@@ -1,6 +1,6 @@
 # Binarization
 
-Converting an image into a binary image. Can be used for segmentation, text recognition etc.
+Converting an image into a binary image. Can be used for segmentation, text isolation etc.
 
 ## Otsu's Binarization
 
@@ -21,3 +21,10 @@ All images taken from [Unsplash](https://unsplash.com).
 + Image of [Brooklyn bridge by Patrick Tomasso](https://unsplash.com/photos/SVVTZtTGyaU)
 + Image of [Coins by Claudio Schwarz](https://unsplash.com/photos/a_DfqkONlm8)
 + Image of [White printed paper by Annie Spratt](https://unsplash.com/photos/a_DfqkONlm8)
++ Image of [Handwritten text by Micah Boswell](https://unsplash.com/photos/00nHr1Lpq6w)
+
+## Drawbacks
+
+As it uses a global threshold, might not do well in situations with uneven illumination. 
+
+![Example image where binarization failed](./demo_images/fail.png)
