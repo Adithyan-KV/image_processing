@@ -7,7 +7,8 @@ def binarize(file_path):
     with Image.open(file_path) as image:
         image_data = np.asarray(image)
         grayscale_image_data = preprocess_image(image_data)
-        binarized_image_data = otsu_binarize(grayscale_image_data)
+        # binarized_image_data = otsu_binarize(grayscale_image_data)
+        binarized_image_data = localized_otsu_binarize(grayscale_image_data)
         binarized_image = Image.fromarray(np.uint8(binarized_image_data))
         binarized_image.save('bin_handwriting.png')
 
@@ -27,6 +28,37 @@ def preprocess_image(image_data):
 
 
 def otsu_binarize(image_data):
+    optimal_threshold = get_optimal_threshold(image_data)
+    # generate_histogram(image_data, optimal_threshold)
+    binarized_image = (image_data > optimal_threshold) * 255
+    return binarized_image
+
+
+def localized_otsu_binarize(image_data):
+    segment = 10
+    rows, columns = image_data.shape
+    bin_image = np.zeros_like(image_data)
+    for row in range(0, rows, segment):
+        for column in range(0, columns, segment):
+            if abs(rows - row) < segment:
+                if abs(columns - column) < segment:
+                    thr = get_optimal_threshold(image_data[row:, column:])
+                    bin_image[row:, column:] = image_data[row:, column:] > thr
+            elif abs(columns - column) < segment:
+                thr = get_optimal_threshold(
+                    image_data[row:row + segment, column:])
+                bin_image[row:row + segment,
+                          column:] = (image_data[row: row + segment, column:] > thr)
+            else:
+                thr = get_optimal_threshold(
+                    image_data[row: row + segment, column: column + segment])
+                bin_image[row: row + segment, column: column + segment] = (
+                    image_data[row: row + segment, column: column + segment] > thr)
+    binarized_image = bin_image * 255
+    return binarized_image
+
+
+def get_optimal_threshold(image_data):
     btw_class_variances = np.zeros(256)
     for threshold in range(256):
         total_pixel_count = image_data.size
@@ -41,14 +73,12 @@ def otsu_binarize(image_data):
             btw_class_variances[threshold] = variance
 
     optimal_threshold = np.argmax(btw_class_variances)
-    generate_histogram(image_data, optimal_threshold)
-    binarized_image = (image_data > optimal_threshold) * 255
-    return binarized_image
+    return optimal_threshold
 
 
 def generate_histogram(image_data, threshold):
     counts, bins = np.histogram(image_data, range(0, 255))
-    plt.bar(bins[:-1], counts, width=1)
+    plt.bar(bins[: -1], counts, width=1)
     plt.axvline(threshold, color='black')
     plt.xlabel('intensity')
     plt.ylabel('freq of pixels')
