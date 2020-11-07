@@ -28,3 +28,11 @@ All images taken from [Unsplash](https://unsplash.com).
 As it uses a global threshold, might not do well in situations with uneven illumination. 
 
 ![Example image where binarization failed](./demo_images/fail.png)
+
+## Localized Otsu's algorithm
+
+A local threshold can be determined for different parts of the image using Otsu's algorithm to partially solve the problems caused by uneven illumination.
+
+![Localized thresholding result](./demo_images/local_otsu.png)
+
+here one can see that the algorithm has managed to isolate all the text but has caused artifacts in the background regions.

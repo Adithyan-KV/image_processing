@@ -35,7 +35,7 @@ def otsu_binarize(image_data):
 
 
 def localized_otsu_binarize(image_data):
-    segment = 10
+    segment = 20
     rows, columns = image_data.shape
     bin_image = np.zeros_like(image_data)
     for row in range(0, rows, segment):
